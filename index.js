@@ -150,9 +150,9 @@ async function run() {
       // const defultEmail = "sohag@gmail.com";
       // const decodedEmail = req.headers.authorization;
       // console.log(decodedEmail);
-      const addBlog = req.body;
-      console.log(addBlog);
-      const eventInfo = await eventCollection.insertOne(addBlog);
+      const addevent = req.body;
+      console.log(addevent);
+      const eventInfo = await eventCollection.insertOne(addevent);
       if (eventInfo) {
         res.status(200).send(eventInfo);
         console.log(eventInfo);
@@ -160,6 +160,26 @@ async function run() {
         res.status(404).send({ message: "Event Not Added" });
       }
     });
+
+    // update lecture
+  app.put("/event/:id", async (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    const filter = { _id: new ObjectId(id) };
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+          title: data.title,
+          time: data.time,
+          date: data.date,
+          image: data.image,
+          address: data.address,
+      },
+    };
+    const result = await eventCollection.updateOne(filter, updateDoc, options);
+    res.send(result);
+    console.log("from update api", result);
+  });
 
     // delete event
     app.delete("/event/:id", async (req, res) => {
@@ -185,9 +205,9 @@ async function run() {
       // const decodedEmail = req.headers.authorization;
       // console.log(decodedEmail);
 
-      const addBlog = req.body;
-      console.log(addBlog);
-      const lectureInfo = await lectureCollection.insertOne(addBlog);
+      const addlecture = req.body;
+      console.log(addlecture);
+      const lectureInfo = await lectureCollection.insertOne(addlecture);
       if (lectureInfo) {
         res.status(200).send(lectureInfo);
         console.log(lectureInfo);
@@ -195,6 +215,25 @@ async function run() {
         res.status(404).send({ message: "Lecture Not Added" });
       }
     });
+
+      // update lecture
+  app.put("/lecture/:id", async (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    const filter = { _id: new ObjectId(id) };
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+        title: data.title,
+        url: data.url,
+        category: data.category,
+        date: data.date,
+      },
+    };
+    const result = await lectureCollection.updateOne(filter, updateDoc, options);
+    res.send(result);
+    console.log("from update api", result);
+  });
 
     // delete Lecture
     app.delete("/lecture/:id", async (req, res) => {
@@ -259,6 +298,7 @@ async function run() {
     };
     const result = await blogCollection.updateOne(filter, updateDoc, options);
     res.send(result);
+    console.log("from update api", result);
   });
 
     
@@ -335,7 +375,7 @@ async function run() {
       // }
     });
 
-    // POST Blog
+    // POST Podcast
     app.post("/addPodcast", async (req, res) => {
       // const defultEmail = "sohag@gmail.com";
       // const decodedEmail = req.headers.authorization;
@@ -346,6 +386,27 @@ async function run() {
       const result = await podcastCollection.insertOne(addPodcast);
       res.send(result);
       console.log(result);
+    });
+
+
+     // update podcast
+     app.put("/podcast/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          title: data.title,
+          lecturer: data.lecturer,
+          date: data.date,
+          audio: data.audio,
+          url: data.url,
+        },
+      };
+      const result = await podcastCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+      console.log("from update api", result);
     });
 
     // delete Blog
@@ -390,6 +451,23 @@ async function run() {
       console.log(result);
     });
 
+        // update gallery
+        app.put("/gallery/:id", async (req, res) => {
+          const id = req.params.id;
+          const data = req.body;
+          const filter = { _id: new ObjectId(id) };
+          const options = { upsert: true };
+          const updateDoc = {
+            $set: {
+              url: data.url,
+              caption: data.caption,
+            },
+          };
+          const result = await galleryCollection.updateOne(filter, updateDoc, options);
+          res.send(result);
+          console.log("from update api", result);
+        });
+
     // delete Gallery
     app.delete("/gallery/:id", async (req, res) => {
       const id = req.params.id;
@@ -430,6 +508,24 @@ async function run() {
       const result = await bookCollection.insertOne(addBook);
       res.send(result);
       console.log(result);
+    });
+
+    // update book
+    app.put("/book/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          title: data.title,
+          url: data.url,
+          author: data.author
+        },
+      };
+      const result = await bookCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+      console.log("from update api", result);
     });
 
     // delete Blog
