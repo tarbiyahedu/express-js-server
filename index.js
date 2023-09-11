@@ -88,6 +88,43 @@ async function run() {
       }
     });
 
+  // update lecture
+  app.put("/program/:id", async (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    const filter = { _id: new ObjectId(id) };
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+        programTitle: data.programTitle,
+        programDate: data.programDate,
+        lectureTime: data.lectureTime,
+        lectureTopic: data.lectureTopic,
+        applicants: data.applicants,
+        applicantsNumber: data.applicantsNumber,
+        googleMap: data.googleMap,
+        placeName: data.placeName,
+        postOffice: data.postOffice,
+        upazila: data.upazila,
+        district: data.district,
+        venue: data.venue,
+        venueDistance: data.venueDistance,
+        guestsName: data.guestsName,
+        collection: data.collection,
+        presidentsName: data.presidentsName,
+        presidentsNumber: data.presidentsNumber,
+        volunteersNumber: data.volunteersNumber,
+        permissionCriteria: data.permissionCriteria,
+        totalProgram: data.totalProgram,
+        lastDate: data.lastDate,
+        lastProgramGguests: data.lastProgramGguests,
+      },
+    };
+    const result = await programCollection.updateOne(filter, updateDoc, options);
+    res.send(result);
+    console.log("from update api", result);
+  });
+
     // delete program
     app.delete("/program/:id", async (req, res) => {
       const id = req.params.id;
@@ -145,6 +182,20 @@ async function run() {
       res.send(eventList);
     });
 
+  // event Details
+  app.get("/event/:id", async (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    const query = { _id: new ObjectId(id) };
+    const eventInfo = await eventCollection.findOne(query);
+    if (eventInfo) {
+      res.status(200).send(eventInfo);
+    } else {
+      res.status(404).send({ message: "event Not Found" });
+    }
+  });
+        
+
     // POST Event
     app.post("/addevent", async (req, res) => {
       // const defultEmail = "sohag@gmail.com";
@@ -197,6 +248,19 @@ async function run() {
     app.get("/lecture", async (req, res) => {
       const lectureList = await lectureCollection.find().toArray();
       res.send(lectureList);
+    });
+
+    // lecture Details
+    app.get("/lecture/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const lectureInfo = await lectureCollection.findOne(query);
+      if (lectureInfo) {
+        res.status(200).send(lectureInfo);
+      } else {
+        res.status(404).send({ message: "lecture Not Found" });
+      }
     });
 
     // POST Lecture
@@ -375,6 +439,20 @@ async function run() {
       // }
     });
 
+
+      // podcast Details
+      app.get("/podcast/:id", async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
+        const query = { _id: new ObjectId(id) };
+        const podcastInfo = await podcastCollection.findOne(query);
+        if (podcastInfo) {
+          res.status(200).send(podcastInfo);
+        } else {
+          res.status(404).send({ message: "podcast Not Found" });
+        }
+      });
+
     // POST Podcast
     app.post("/addPodcast", async (req, res) => {
       // const defultEmail = "sohag@gmail.com";
@@ -438,6 +516,19 @@ async function run() {
       // }
     });
 
+      // gallery Details
+      app.get("/gallery/:id", async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
+        const query = { _id: new ObjectId(id) };
+        const galleryInfo = await galleryCollection.findOne(query);
+        if (galleryInfo) {
+          res.status(200).send(galleryInfo);
+        } else {
+          res.status(404).send({ message: "gallery Not Found" });
+        }
+      });
+
     // POST Gallery
     app.post("/addGallery", async (req, res) => {
       // const defultEmail = "sohag@gmail.com";
@@ -496,6 +587,19 @@ async function run() {
       //     return res.status(403).send({ message: 'forbidden access' });
       // }
     });
+
+      // Book Details
+      app.get("/book/:id", async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
+        const query = { _id: new ObjectId(id) };
+        const bookInfo = await bookCollection.findOne(query);
+        if (bookInfo) {
+          res.status(200).send(bookInfo);
+        } else {
+          res.status(404).send({ message: "book Not Found" });
+        }
+      });
 
     // POST Blog
     app.post("/addBook", async (req, res) => {
